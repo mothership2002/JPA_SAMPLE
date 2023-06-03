@@ -16,15 +16,15 @@ import java.util.stream.Collectors;
 
 @Getter
 @ToString
-public class InsertMenuGroupDto extends BaseInfo {
+public class MenuGroupDto extends BaseInfo {
 
     private Long id;
     private String menuGroupName;
     private List<MenuDto> menuList;
     private List<UserGroupDto> userGroupList;
 
-    public InsertMenuGroupDto(LocalDateTime createDate, String createBy, LocalDateTime updateDate, String modifier,
-                              Long id, String menuGroupName, List<MenuDto> menuList, List<UserGroupDto> userGroupList) {
+    public MenuGroupDto(LocalDateTime createDate, String createBy, LocalDateTime updateDate, String modifier,
+                        Long id, String menuGroupName, List<MenuDto> menuList, List<UserGroupDto> userGroupList) {
         super(createDate, createBy, updateDate, modifier);
         this.id = id;
         this.menuGroupName = menuGroupName;
@@ -32,9 +32,9 @@ public class InsertMenuGroupDto extends BaseInfo {
         this.userGroupList = userGroupList;
     }
 
-    public static InsertMenuGroupDto createDto(MenuGroup entity) {
+    public static MenuGroupDto createDto(MenuGroup entity) {
         if (entity != null) {
-            return new InsertMenuGroupDto(entity.getCreateDate(), entity.getCreateBy(),
+            return new MenuGroupDto(entity.getCreateDate(), entity.getCreateBy(),
                     entity.getUpdateDate(), entity.getModifier(),
                     entity.getId(), entity.getMenuGroupName(),
                     checkNullMenu(entity.getMenuList()),

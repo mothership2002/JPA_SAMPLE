@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import sample.ex.jpatest.domain.dto.BaseInfo;
-import sample.ex.jpatest.domain.dto.menuGroup.InsertMenuGroupDto;
+import sample.ex.jpatest.domain.dto.menuGroup.MenuGroupDto;
 import sample.ex.jpatest.domain.entity.UserGroup;
 
 import java.time.LocalDateTime;
@@ -16,10 +16,10 @@ public class UserGroupDto extends BaseInfo {
 
     private Long id;
     private String userGroupName;
-    private InsertMenuGroupDto menuGroup;
+    private MenuGroupDto menuGroup;
 
     public UserGroupDto(LocalDateTime createDate, String createBy, LocalDateTime updateDate, String modifier,
-                        Long id, String userGroupName, InsertMenuGroupDto insertMenuGroupDto) {
+                        Long id, String userGroupName, MenuGroupDto insertMenuGroupDto) {
         super(createDate, createBy, updateDate, modifier);
         this.id = id;
         this.userGroupName = userGroupName;

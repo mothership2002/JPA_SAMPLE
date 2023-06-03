@@ -6,5 +6,5 @@ import sample.ex.jpatest.domain.entity.UserGroup;
 import java.util.List;
 
 public interface UserGroupRepository extends JpaRepository<UserGroup, Long> {
-    List<UserGroup> findByMenuGroupId(Long MenuGroupId);
+    List<UserGroup> findAllByMenuGroupId(Long MenuGroupId);
 }

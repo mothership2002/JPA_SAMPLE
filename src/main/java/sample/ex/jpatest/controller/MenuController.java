@@ -16,9 +16,7 @@ import static sample.ex.jpatest.Common.Common.date;
 @RequestMapping("/menu")
 @RequiredArgsConstructor
 public class MenuController {
-
     private final MenuService menuService;
-
     @GetMapping("/{menuGroupId}")
     public CommonResponse<List<SelectMenuDto>> selectMenuList(@PathVariable Long menuGroupId) {
         List<SelectMenuDto> menus = menuService.selectMenuList(menuGroupId);

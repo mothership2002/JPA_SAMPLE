@@ -36,7 +36,7 @@ public class MenuService {
     }
 
     public List<SelectMenuDto> selectMenuList(Long memberGroupId) {
-        return menuRepository.findAllWithMenuGroup(memberGroupId)
+        return menuRepository.findAllByMenuGroupId(memberGroupId)
                 .stream().map(SelectMenuDto::createDto).collect(Collectors.toCollection(ArrayList::new));
     }
 }

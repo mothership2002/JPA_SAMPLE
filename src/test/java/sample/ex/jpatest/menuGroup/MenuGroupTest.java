@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import sample.ex.jpatest.domain.dto.menuGroup.InsertMenuGroupDto;
+import sample.ex.jpatest.domain.dto.menuGroup.MenuGroupDto;
 import sample.ex.jpatest.repository.MenuGroupRepository;
 import sample.ex.jpatest.service.MenuGroupService;
 
@@ -24,8 +24,8 @@ public class MenuGroupTest {
 
     @Test
     void service() {
-        List<InsertMenuGroupDto> result = menuGrouprepository.findAll().stream()
-                .map(InsertMenuGroupDto::createDto).collect(Collectors.toCollection(ArrayList::new));
+        List<MenuGroupDto> result = menuGrouprepository.findAll().stream()
+                .map(MenuGroupDto::createDto).collect(Collectors.toCollection(ArrayList::new));
 
         result.forEach( e -> log.info(e.toString()));
 

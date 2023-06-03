@@ -1,7 +1,7 @@
 package sample.ex.jpatest.domain.entity;
 
 import lombok.*;
-import sample.ex.jpatest.domain.dto.menuGroup.InsertMenuGroupDto;
+import sample.ex.jpatest.domain.dto.menuGroup.MenuGroupDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -36,7 +36,7 @@ public class MenuGroup extends BaseEntity {
         this.userGroupList = userGroupList;
     }
 
-    public static MenuGroup createEntity(InsertMenuGroupDto dto) {
+    public static MenuGroup createEntity(MenuGroupDto dto) {
         if (dto != null) {
             return new MenuGroup(dto.getCreateDate(), dto.getCreateBy(), dto.getUpdateDate(),
                     dto.getModifier(), dto.getId(), dto.getMenuGroupName(),

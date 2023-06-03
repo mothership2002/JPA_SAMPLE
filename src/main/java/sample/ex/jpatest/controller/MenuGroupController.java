@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import sample.ex.jpatest.Common.Common;
 import sample.ex.jpatest.domain.dto.CommonResponse;
-import sample.ex.jpatest.domain.dto.menuGroup.InsertMenuGroupDto;
+import sample.ex.jpatest.domain.dto.menuGroup.MenuGroupDto;
 import sample.ex.jpatest.domain.dto.menuGroup.SelectMenuGroupDto;
 import sample.ex.jpatest.service.MenuGroupService;
 
@@ -21,7 +21,7 @@ public class MenuGroupController {
     private final MenuGroupService menuGroupService;
 
     @PostMapping
-    public CommonResponse insertMenuGroup(@RequestBody InsertMenuGroupDto insertMenuGroupDto) {
+    public CommonResponse insertMenuGroup(@RequestBody MenuGroupDto insertMenuGroupDto) {
         insertMenuGroupDto.setCreateDate(Common.date());
         Long menuGroupId = menuGroupService.insertMenuGroup(insertMenuGroupDto);
         return new CommonResponse<>("message", HttpStatus.OK, date(), menuGroupId);
@@ -30,6 +30,13 @@ public class MenuGroupController {
     @GetMapping
     public CommonResponse<List<SelectMenuGroupDto>> selectMenuGroup() {
         List<SelectMenuGroupDto> result = menuGroupService.selectMenuGroup();
-        return new CommonResponse<>("message",HttpStatus.OK,date(),result);
+        return new CommonResponse<>("message", HttpStatus.OK, date(), result);
+    }
+
+    @PatchMapping
+    public CommonResponse updateMenuGroup(@RequestBody MenuGroupDto updateMenuGroupDto) {
+        updateMenuGroupDto.setUpdateDate(date());
+        menuGroupService.updateMenuGroup(updateMenuGroupDto);
+        return new CommonResponse("message", HttpStatus.OK, date(), null);
     }
 }
