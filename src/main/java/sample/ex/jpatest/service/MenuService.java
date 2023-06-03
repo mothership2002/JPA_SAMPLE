@@ -24,13 +24,14 @@ public class MenuService {
     private final MenuGroupRepository menuGroupRepository;
 
     @Transactional
-    public void insertMenu(MenuDto dto) {
+    public Long insertMenu(MenuDto dto) {
         Menu menu = Menu.createEntity(dto);
         MenuGroup menuGroup = menu.getMenuGroup();
-        if( menuGroup != null) {
+        if (menuGroup != null) {
             menuGroupRepository.save(menuGroup);
         }
         menuRepository.save(menu);
+        return menu.getId();
     }
 
     public List<MenuDto> selectMenuList() {

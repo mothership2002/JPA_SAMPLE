@@ -1,9 +1,6 @@
 package sample.ex.jpatest.domain.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import sample.ex.jpatest.domain.dto.MenuGroupDto;
 
 import javax.persistence.*;
@@ -15,6 +12,7 @@ import java.util.stream.Collectors;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@ToString(of = {"id", "menuGroupName"})
 public class MenuGroup extends BaseEntity {
 
     @Id

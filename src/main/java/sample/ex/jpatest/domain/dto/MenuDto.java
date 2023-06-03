@@ -22,7 +22,7 @@ public class MenuDto extends BaseInfo {
         super(createDate, createBy, updateDate, modifier);
         this.menuId = menuId;
         this.menuName = menuName;
-        if ( menuGroup != null) {
+        if (menuGroup != null) {
             this.menuGroup = menuGroup;
         }
     }

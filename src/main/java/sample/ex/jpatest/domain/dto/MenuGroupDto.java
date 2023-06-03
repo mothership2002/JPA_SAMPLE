@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-
 @ToString
 public class MenuGroupDto extends BaseInfo {
 
@@ -55,7 +54,6 @@ public class MenuGroupDto extends BaseInfo {
             return userGroupList.stream()
                     .map(UserGroupDto::createDto)
                     .collect(Collectors.toCollection(ArrayList::new));
-
         }
         return new ArrayList<>();
     }

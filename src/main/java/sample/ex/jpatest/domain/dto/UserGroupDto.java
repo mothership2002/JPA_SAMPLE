@@ -2,6 +2,7 @@ package sample.ex.jpatest.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import sample.ex.jpatest.domain.entity.MenuGroup;
 import sample.ex.jpatest.domain.entity.UserGroup;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @ToString
-
+@Setter
 public class UserGroupDto extends BaseInfo {
 
     private Long id;
@@ -22,7 +23,9 @@ public class UserGroupDto extends BaseInfo {
         super(createDate, createBy, updateDate, modifier);
         this.id = id;
         this.userGroupName = userGroupName;
-        this.menuGroup = menuGroupDto;
+        if(menuGroupDto != null) {
+            this.menuGroup = menuGroupDto;
+        }
     }
 
     public static UserGroupDto createDto(UserGroup entity) {
