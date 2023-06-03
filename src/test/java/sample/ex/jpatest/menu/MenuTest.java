@@ -1,17 +1,10 @@
 package sample.ex.jpatest.menu;
 
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import sample.ex.jpatest.domain.dto.MenuDto;
-import sample.ex.jpatest.domain.entity.Menu;
 import sample.ex.jpatest.service.MenuService;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,18 +1,17 @@
 package sample.ex.jpatest.domain.entity;
 
 import lombok.*;
-import sample.ex.jpatest.domain.dto.MenuGroupDto;
+import sample.ex.jpatest.domain.dto.menuGroup.InsertMenuGroupDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString(of = {"id", "menuGroupName"})
+@ToString
 public class MenuGroup extends BaseEntity {
 
     @Id
@@ -37,7 +36,7 @@ public class MenuGroup extends BaseEntity {
         this.userGroupList = userGroupList;
     }
 
-    public static MenuGroup createEntity(MenuGroupDto dto) {
+    public static MenuGroup createEntity(InsertMenuGroupDto dto) {
         if (dto != null) {
             return new MenuGroup(dto.getCreateDate(), dto.getCreateBy(), dto.getUpdateDate(),
                     dto.getModifier(), dto.getId(), dto.getMenuGroupName(),

@@ -1,10 +1,9 @@
 package sample.ex.jpatest.domain.entity;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sample.ex.jpatest.domain.dto.UserGroupDto;
+import sample.ex.jpatest.domain.dto.userGroup.UserGroupDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

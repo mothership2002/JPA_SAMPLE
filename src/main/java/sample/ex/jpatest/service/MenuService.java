@@ -4,7 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sample.ex.jpatest.domain.dto.MenuDto;
+import sample.ex.jpatest.domain.dto.menu.MenuDto;
+import sample.ex.jpatest.domain.dto.menu.SelectMenuDto;
 import sample.ex.jpatest.domain.entity.Menu;
 import sample.ex.jpatest.domain.entity.MenuGroup;
 import sample.ex.jpatest.repository.MenuGroupRepository;
@@ -34,8 +35,8 @@ public class MenuService {
         return menu.getId();
     }
 
-    public List<MenuDto> selectMenuList() {
-        return menuRepository.findAllWithMenuGroup()
-                .stream().map(MenuDto::createDto).collect(Collectors.toCollection(ArrayList::new));
+    public List<SelectMenuDto> selectMenuList(Long memberGroupId) {
+        return menuRepository.findAllWithMenuGroup(memberGroupId)
+                .stream().map(SelectMenuDto::createDto).collect(Collectors.toCollection(ArrayList::new));
     }
 }

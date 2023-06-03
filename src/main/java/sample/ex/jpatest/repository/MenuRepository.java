@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface MenuRepository extends JpaRepository<Menu, Long> {
 
-    @Query("select m from Menu m join fetch m.menuGroup")
-    List<Menu> findAllWithMenuGroup();
+    @Query("select m from Menu m where m.menuGroup.id = :menuGroupId")
+    List<Menu> findAllWithMenuGroup(Long menuGroupId);
 }
