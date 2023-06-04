@@ -1,6 +1,8 @@
 package sample.ex.jpatest.repository;
 
+import java.util.List;
+
 public interface MenuRepositoryCustom {
 
-    Long updateMenuListByMenuGroupId(Long menuGroupId);
+    long updateDeleteStatus(Long menuGroupId, List<Long> deletedMenuId);
 }

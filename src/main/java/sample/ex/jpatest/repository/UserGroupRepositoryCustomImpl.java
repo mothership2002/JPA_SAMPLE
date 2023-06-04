@@ -1,28 +1,27 @@
 package sample.ex.jpatest.repository;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.QueryFactory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import sample.ex.jpatest.domain.entity.QMenu;
+import sample.ex.jpatest.domain.entity.QUserGroup;
 
 import java.util.List;
 
 @RequiredArgsConstructor
-public class MenuRepositoryCustomImpl implements MenuRepositoryCustom {
+public class UserGroupRepositoryCustomImpl implements UserGroupRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
-    private final QMenu menu = QMenu.menu;
+    private final QUserGroup userGroup = QUserGroup.userGroup;
 
     @Override
     public long updateDeleteStatus(Long menuGroupId, List<Long> deletedMenuId) {
         BooleanBuilder builder = new BooleanBuilder();
 
-        builder.and(menu.menuGroup.id.eq(menuGroupId));
-        deletedMenuId.stream().forEach(e -> builder.or(menu.id.eq(e)));
+        builder.and(userGroup.menuGroup.id.eq(menuGroupId));
+        deletedMenuId.stream().forEach(e -> builder.or(userGroup.id.eq(e)));
 
-        return queryFactory.update(menu)
-                .setNull(menu.menuGroup.id)
+        return queryFactory.update(userGroup)
+                .setNull(userGroup.menuGroup.id)
                 .where(builder)
                 .execute();
     }

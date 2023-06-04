@@ -5,6 +5,6 @@ import sample.ex.jpatest.domain.entity.UserGroup;
 
 import java.util.List;
 
-public interface UserGroupRepository extends JpaRepository<UserGroup, Long> {
+public interface UserGroupRepository extends JpaRepository<UserGroup, Long>, UserGroupRepositoryCustom {
     List<UserGroup> findAllByMenuGroupId(Long MenuGroupId);
 }
