@@ -33,6 +33,7 @@ public class MenuGroupService {
     private final UserGroupRepository userGroupRepository;
     private final MenuRepository menuRepository;
 
+
     public List<SelectMenuGroupDto> selectMenuGroup() {
         return menuGroupRepository.findAll().stream()
                 .map(SelectMenuGroupDto::createDto).collect(Collectors.toCollection(ArrayList::new));
@@ -67,71 +68,52 @@ public class MenuGroupService {
 
     @Transactional
     public void updateMenuGroup(MenuGroupDto dto) {
+        menuGroupRepository.findById(dto.getId()).orElseThrow(() -> new IllegalArgumentException("없어잉"));
+
         dto.setUpdateDate(Common.date());
         MenuGroup menuGroup = MenuGroup.createEntity(dto);
+
         List<MenuDto> menuDtoList = dto.getMenuList();
-        List<UserGroupDto> userGroupDtoList = dto.getUserGroupList();
+        List<MenuDto> newMenuDtoList = menuDtoList.stream()
+                .filter(e -> e.getId() == null)
+                .collect(Collectors.toCollection(ArrayList::new));
+        
 
         List<Menu> originalMenuList = menuRepository.findAllByMenuGroupId(dto.getId());
-        List<UserGroup> originalUserGroupList = userGroupRepository.findAllByMenuGroupId(dto.getId());
 
-        List<Long> originalMenuIdList = originalMenuList.stream()
-                .mapToLong(Menu::getId)
-                .boxed()
-                .collect(Collectors.toCollection(ArrayList::new));
-
-        List<Long> originalUserGroupIdList = originalUserGroupList.stream()
-                .mapToLong(UserGroup::getId)
-                .boxed()
-                .collect(Collectors.toCollection(ArrayList::new));
-
-        List<Long> menuIdList = menuDtoList.stream()
-                .mapToLong(MenuDto::getId)
-                .boxed()
-                .collect(Collectors.toCollection(ArrayList::new));
-
-        List<Long> userGroupIdList = userGroupDtoList.stream()
-                .mapToLong(UserGroupDto::getId)
-                .boxed()
-                .collect(Collectors.toCollection(ArrayList::new));
-
-        Long[] deleteMenuIdList = originalMenuIdList.stream()
-                .filter(originalId -> !menuIdList.contains(originalId))
-                .mapToLong(l -> l)
-                .boxed()
-                .toArray(Long[]::new);
-
-        Long[] deleteUserGroupIdList = originalUserGroupIdList.stream()
-                .filter(originalUserGroupId -> !userGroupIdList.contains(originalUserGroupId))
-                .mapToLong(l -> l)
-                .boxed()
-                .toArray(Long[]::new);
+        Long[] deleteMenuIdList = getDeletedIdList(originalMenuList, menuDtoList);
 
         if (deleteMenuIdList.length != 0) {
             menuRepository.updateDeleteStatus(dto.getId(), deleteMenuIdList);
         }
+
+        setUpdateDate(menuDtoList);
+        List<Menu> menuList = menuDtoList.stream()
+                .map(Menu::createEntity)
+                .collect(Collectors.toCollection(ArrayList::new));
+        menuList.forEach(e -> e.setMenuGroup(menuGroup));
+
+        if (!menuList.isEmpty()) {
+            menuRepository.saveAll(menuList);
+        }
+
+        List<UserGroupDto> userGroupDtoList = dto.getUserGroupList();
+        List<UserGroup> originalUserGroupList = userGroupRepository.findAllByMenuGroupId(dto.getId());
+
+        Long[] deleteUserGroupIdList = getDeletedIdList(originalUserGroupList, userGroupDtoList);
+
         if (deleteUserGroupIdList.length != 0) {
             userGroupRepository.updateDeleteStatus(dto.getId(), deleteUserGroupIdList);
         }
 
-        setUpdateDate(menuDtoList);
         setUpdateDate(userGroupDtoList);
-
-        List<Menu> menuList = menuDtoList.stream()
-                .map(Menu::createEntity)
-                .collect(Collectors.toCollection(ArrayList::new));
 
         List<UserGroup> userGroupList = userGroupDtoList.stream()
                 .map(UserGroup::createEntity)
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        menuList.forEach(e -> e.setMenuGroup(menuGroup));
         userGroupList.forEach(e -> e.setMenuGroup(menuGroup));
-
-        if(!menuList.isEmpty()) {
-            menuRepository.saveAll(menuList);
-        }
-        if(!userGroupList.isEmpty()) {
+        if (!userGroupList.isEmpty()) {
             userGroupRepository.saveAll(userGroupList);
         }
 
@@ -141,4 +123,40 @@ public class MenuGroupService {
     private <T extends BaseInfo> void setUpdateDate(List<T> list) {
         list.forEach(e -> e.setUpdateDate(Common.date()));
     }
+
+
+    private <Entity, Dto> Long[] getDeletedIdList(List<Entity> list, List<Dto> dtoList) {
+
+        List<Long> originalIdList = null;
+
+        originalIdList = list.stream()
+                .mapToLong(e -> {
+                    try {
+                        return (Long) e.getClass().getMethod("getId").invoke(e);
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
+                })
+                .boxed()
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        List<Long> dtoIdList = dtoList.stream()
+                .mapToLong(e -> {
+                    try {
+                        return (Long) e.getClass().getMethod("getId").invoke(e.getClass());
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
+                })
+                .boxed()
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        return originalIdList.stream()
+                .filter(originalId -> !dtoIdList.contains(originalId))
+                .mapToLong(l -> l)
+                .boxed()
+                .toArray(Long[]::new);
+    }
+
+
 }
