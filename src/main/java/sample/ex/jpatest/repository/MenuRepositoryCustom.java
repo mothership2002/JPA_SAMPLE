@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface MenuRepositoryCustom {
 
-    long updateDeleteStatus(Long menuGroupId, List<Long> deletedMenuId);
+    long updateDeleteStatus(Long menuGroupId, Long[] deletedMenuId);
 }

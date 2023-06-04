@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface UserGroupRepositoryCustom {
 
-    long updateDeleteStatus(Long menuGroupId, List<Long> userGroupIdList);
+    long updateDeleteStatus(Long menuGroupId, Long[] userGroupIdList);
 }

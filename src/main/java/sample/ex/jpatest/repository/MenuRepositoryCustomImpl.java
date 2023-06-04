@@ -6,6 +6,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import sample.ex.jpatest.domain.entity.QMenu;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -15,11 +16,11 @@ public class MenuRepositoryCustomImpl implements MenuRepositoryCustom {
     private final QMenu menu = QMenu.menu;
 
     @Override
-    public long updateDeleteStatus(Long menuGroupId, List<Long> deletedMenuId) {
+    public long updateDeleteStatus(Long menuGroupId, Long[] deletedMenuId) {
         BooleanBuilder builder = new BooleanBuilder();
 
         builder.and(menu.menuGroup.id.eq(menuGroupId));
-        deletedMenuId.stream().forEach(e -> builder.or(menu.id.eq(e)));
+        Arrays.stream(deletedMenuId).forEach(e -> builder.or(menu.id.eq(e)));
 
         return queryFactory.update(menu)
                 .setNull(menu.menuGroup.id)

@@ -18,7 +18,6 @@ import sample.ex.jpatest.repository.MenuRepository;
 import sample.ex.jpatest.repository.UserGroupRepository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -76,21 +75,44 @@ public class MenuGroupService {
         List<Menu> originalMenuList = menuRepository.findAllByMenuGroupId(dto.getId());
         List<UserGroup> originalUserGroupList = userGroupRepository.findAllByMenuGroupId(dto.getId());
 
-        List<Long> originalMenuIdList = originalMenuList.stream().mapToLong(Menu::getId).boxed().collect(Collectors.toCollection(ArrayList::new));
-        List<Long> originalUserGroupIdList = originalUserGroupList.stream().mapToLong(UserGroup::getId).boxed().collect(Collectors.toCollection(ArrayList::new));
-        List<Long> menuIdList = menuDtoList.stream().mapToLong(MenuDto::getId).boxed().collect(Collectors.toCollection(ArrayList::new));
-        List<Long> userGroupIdList = userGroupDtoList.stream().mapToLong(UserGroupDto::getId).boxed().collect(Collectors.toCollection(ArrayList::new));
+        List<Long> originalMenuIdList = originalMenuList.stream()
+                .mapToLong(Menu::getId)
+                .boxed()
+                .collect(Collectors.toCollection(ArrayList::new));
 
-        List<Long> deleteMenuIdList = originalMenuIdList.stream().filter(originalId -> !menuIdList.contains(originalId)).collect(Collectors.toCollection(ArrayList::new));
-        List<Long> deleteUserGroupIdList = originalUserGroupIdList.stream().filter(originalUserGroupId -> !userGroupIdList.contains(originalUserGroupId)).collect(Collectors.toCollection(ArrayList::new));
+        List<Long> originalUserGroupIdList = originalUserGroupList.stream()
+                .mapToLong(UserGroup::getId)
+                .boxed()
+                .collect(Collectors.toCollection(ArrayList::new));
 
-        if (!deleteMenuIdList.isEmpty()) {
+        List<Long> menuIdList = menuDtoList.stream()
+                .mapToLong(MenuDto::getId)
+                .boxed()
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        List<Long> userGroupIdList = userGroupDtoList.stream()
+                .mapToLong(UserGroupDto::getId)
+                .boxed()
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        Long[] deleteMenuIdList = originalMenuIdList.stream()
+                .filter(originalId -> !menuIdList.contains(originalId))
+                .mapToLong(l -> l)
+                .boxed()
+                .toArray(Long[]::new);
+
+        Long[] deleteUserGroupIdList = originalUserGroupIdList.stream()
+                .filter(originalUserGroupId -> !userGroupIdList.contains(originalUserGroupId))
+                .mapToLong(l -> l)
+                .boxed()
+                .toArray(Long[]::new);
+
+        if (deleteMenuIdList.length != 0) {
             menuRepository.updateDeleteStatus(dto.getId(), deleteMenuIdList);
         }
-        if (!deleteUserGroupIdList.isEmpty()) {
+        if (deleteUserGroupIdList.length != 0) {
             userGroupRepository.updateDeleteStatus(dto.getId(), deleteUserGroupIdList);
         }
-
 
         setUpdateDate(menuDtoList);
         setUpdateDate(userGroupDtoList);
@@ -106,8 +128,13 @@ public class MenuGroupService {
         menuList.forEach(e -> e.setMenuGroup(menuGroup));
         userGroupList.forEach(e -> e.setMenuGroup(menuGroup));
 
-        menuRepository.saveAll(menuList);
-        userGroupRepository.saveAll(userGroupList);
+        if(!menuList.isEmpty()) {
+            menuRepository.saveAll(menuList);
+        }
+        if(!userGroupList.isEmpty()) {
+            userGroupRepository.saveAll(userGroupList);
+        }
+
         menuGroupRepository.save(menuGroup);
     }
 

@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import sample.ex.jpatest.domain.entity.QUserGroup;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -14,11 +15,11 @@ public class UserGroupRepositoryCustomImpl implements UserGroupRepositoryCustom 
     private final QUserGroup userGroup = QUserGroup.userGroup;
 
     @Override
-    public long updateDeleteStatus(Long menuGroupId, List<Long> deletedMenuId) {
+    public long updateDeleteStatus(Long menuGroupId, Long[] deletedMenuId) {
         BooleanBuilder builder = new BooleanBuilder();
 
         builder.and(userGroup.menuGroup.id.eq(menuGroupId));
-        deletedMenuId.stream().forEach(e -> builder.or(userGroup.id.eq(e)));
+        Arrays.stream(deletedMenuId).forEach(e -> builder.or(userGroup.id.eq(e)));
 
         return queryFactory.update(userGroup)
                 .setNull(userGroup.menuGroup.id)
