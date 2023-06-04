@@ -24,21 +24,25 @@ public class Menu extends BaseEntity {
     @JoinColumn(name = "menu_group_id")
     private MenuGroup menuGroup;
 
+    public void setMenuGroup(MenuGroup menuGroup) {
+        this.menuGroup = menuGroup;
+        menuGroup.getMenuList().add(this);
+    }
+
     protected Menu(LocalDateTime createDate, String createBy, LocalDateTime updateDate, String modifier,
-                   Long id, String menuName, MenuGroup menuGroup) {
+                   Long id, String menuName) {
         super(createDate, createBy, updateDate, modifier);
         this.id = id;
         this.menuName = menuName;
-        this.menuGroup = menuGroup;
     }
 
     public static Menu createEntity(MenuDto dto) {
         if (dto != null) {
             return new Menu(dto.getCreateDate(), dto.getCreateBy(),
                     dto.getUpdateDate(), dto.getModifier(),
-                    dto.getMenuId(), dto.getMenuName(),
-                    MenuGroup.createEntity(dto.getMenuGroup()));
+                    dto.getId(), dto.getMenuName());
         }
         return null;
     }
+
 }

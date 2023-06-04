@@ -10,10 +10,12 @@ public class MenuRepositoryCustomImpl implements MenuRepositoryCustom {
 
     private JPAQueryFactory queryFactory;
     private final QMenu menu = QMenu.menu;
+
     @Override
     public Long updateMenuListByMenuGroupId(Long menuGroupId) {
-        return queryFactory.update(menu)
-                .where(menu.menuGroup.id.eq(menuGroupId))
-                .set(menu.menuName, );
+//        return queryFactory.update(menu)
+//                .where(menu.menuGroup.id.eq(menuGroupId))
+//                .set(menu.menuName, );
+        return null;
     }
 }

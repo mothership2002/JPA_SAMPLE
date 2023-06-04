@@ -14,14 +14,14 @@ import java.time.LocalDateTime;
 @Setter
 public class MenuDto extends BaseInfo {
 
-    private Long menuId;
+    private Long id;
     private String menuName;
     private MenuGroupDto menuGroup;
 
     public MenuDto(LocalDateTime createDate, String createBy, LocalDateTime updateDate, String modifier,
                    Long menuId, String menuName, MenuGroupDto menuGroup) {
         super(createDate, createBy, updateDate, modifier);
-        this.menuId = menuId;
+        this.id = menuId;
         this.menuName = menuName;
         if (menuGroup != null) {
             this.menuGroup = menuGroup;

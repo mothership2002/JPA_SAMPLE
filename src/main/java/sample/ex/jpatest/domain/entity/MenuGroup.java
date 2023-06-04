@@ -28,21 +28,19 @@ public class MenuGroup extends BaseEntity {
     private List<UserGroup> userGroupList = new ArrayList<>();
 
     protected MenuGroup(LocalDateTime createDate, String createBy, LocalDateTime updateDate, String modifier,
-                        Long id, String menuGroupName, List<Menu> menuList, List<UserGroup> userGroupList) {
+                        Long id, String menuGroupName) {
         super(createDate, createBy, updateDate, modifier);
         this.id = id;
         this.menuGroupName = menuGroupName;
-        this.menuList = menuList;
-        this.userGroupList = userGroupList;
     }
 
     public static MenuGroup createEntity(MenuGroupDto dto) {
         if (dto != null) {
             return new MenuGroup(dto.getCreateDate(), dto.getCreateBy(), dto.getUpdateDate(),
-                    dto.getModifier(), dto.getId(), dto.getMenuGroupName(),
-                    null, null);
+                    dto.getModifier(), dto.getId(), dto.getMenuGroupName());
         }
         return null;
     }
+
 
 }

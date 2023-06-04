@@ -24,19 +24,22 @@ public class UserGroup extends BaseEntity {
     @JoinColumn(name = "menu_group_id")
     private MenuGroup menuGroup;
 
+    public void setMenuGroup(MenuGroup menuGroup) {
+        this.menuGroup = menuGroup;
+        menuGroup.getUserGroupList().add(this);
+    }
+
     protected UserGroup(LocalDateTime createDate, String createBy, LocalDateTime updateDate, String modifier,
-                        Long id, String userGroupName, MenuGroup menuGroup) {
+                        Long id, String userGroupName) {
         super(createDate, createBy, updateDate, modifier);
         this.id = id;
         this.userGroupName = userGroupName;
-        this.menuGroup = menuGroup;
     }
 
     public static UserGroup createEntity(UserGroupDto dto) {
         if (dto != null) {
             return new UserGroup(dto.getCreateDate(), dto.getCreateBy(), dto.getUpdateDate(),
-                    dto.getModifier(), dto.getId(), dto.getUserGroupName(),
-                    MenuGroup.createEntity(dto.getMenuGroup()));
+                    dto.getModifier(), dto.getId(), dto.getUserGroupName());
         }
         return null;
     }
